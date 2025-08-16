@@ -337,6 +337,11 @@ public class AuthenticationService {
         return hasAnyRole("admin", "staff");
     }
 
+    // Checks if the given user is a guest
+    public boolean isGuest(User user) {
+        return user != null && "guest".equalsIgnoreCase(user.getRole());
+    }
+
     /**
      * Checks if the current user is a guest
      *
@@ -775,6 +780,13 @@ public class AuthenticationService {
                     ", totalTimeout=" + totalTimeout +
                     '}';
         }
+    }
+
+    // Returns true if the user can manage bookings (admin or staff)
+    public boolean canManageBookings(User user) {
+        if (user == null) return false;
+        String role = user.getRole();
+        return "admin".equalsIgnoreCase(role) || "staff".equalsIgnoreCase(role);
     }
 }
 
