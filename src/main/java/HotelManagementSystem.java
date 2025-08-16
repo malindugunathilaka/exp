@@ -1,4 +1,4 @@
-package com.hotel.main;
+package main;
 
 import dao.DatabaseManager;
 import ui.LoginPanel;
