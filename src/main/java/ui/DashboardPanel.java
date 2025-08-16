@@ -12,7 +12,7 @@ public class DashboardPanel extends JPanel {
 
     // UI Panels
     private RoomsPanel roomsPanel;
-    private BookingsPanel bookingsPanel;
+    private Bookingpanel bookingsPanel;
     private UsersPanel usersPanel;
     private ReportsPanel reportsPanel;
 
@@ -112,17 +112,17 @@ public class DashboardPanel extends JPanel {
 
         // Role-specific tabs
         if ("guest".equals(currentUser.getRole())) {
-            bookingsPanel = new BookingsPanel(currentUser);
+            bookingsPanel = new Bookingpanel(currentUser);
             tabbedPane.addTab("My Bookings", createTabIcon("📋"), bookingsPanel, "View your bookings");
             tabbedPane.addTab("Book a Room", createTabIcon("🎯"), new BookingFormpanel(currentUser), "Make a new reservation");
 
         } else if ("staff".equals(currentUser.getRole())) {
-            bookingsPanel = new BookingsPanel(currentUser);
+            bookingsPanel = new Bookingpanel(currentUser);
             tabbedPane.addTab("Manage Bookings", createTabIcon("📋"), bookingsPanel, "Manage all bookings");
             tabbedPane.addTab("Check In/Out", createTabIcon("🔑"), new CheckInOutPanel(), "Process check-ins and check-outs");
 
         } else if ("admin".equals(currentUser.getRole())) {
-            bookingsPanel = new BookingsPanel(currentUser);
+            bookingsPanel = new Bookingpanel(currentUser);
             tabbedPane.addTab("Manage Bookings", createTabIcon("📋"), bookingsPanel, "Manage all bookings");
 
             usersPanel = new UsersPanel();
@@ -187,7 +187,7 @@ public class DashboardPanel extends JPanel {
         return roomsPanel;
     }
 
-    public BookingsPanel getBookingsPanel() {
+    public Bookingpanel getBookingsPanel() {
         return bookingsPanel;
     }
 

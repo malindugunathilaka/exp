@@ -119,9 +119,10 @@ public class LoginPanel extends BackgroundPanel {
         }
 
         // Authenticate user
-        authenticatedUser = authService.authenticateUser(username, password);
+        AuthenticationService.AuthenticationResult result = authService.authenticateUser(username, password);
+        authenticatedUser = result.getUser();
 
-        if (authenticatedUser != null) {
+        if (result.isSuccess()) {
             // Clear password field for security
             passwordField.setText("");
 
@@ -130,7 +131,7 @@ public class LoginPanel extends BackgroundPanel {
                 loginSuccessListener.actionPerformed(null);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Invalid username or password");
+            JOptionPane.showMessageDialog(this, result.getMessage());
             passwordField.setText(""); // Clear password field on failure
             passwordField.requestFocus();
         }

@@ -10,7 +10,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.List;
 
-public class BookingsPanel extends JPanel {
+public class Bookingpanel extends JPanel {
     private User currentUser;
     private BookingService bookingService;
     private AuthenticationService authService;
@@ -19,10 +19,10 @@ public class BookingsPanel extends JPanel {
     private JButton checkInButton, checkOutButton, cancelButton, refreshButton;
     private JComboBox<String> statusFilter;
 
-    public BookingsPanel(User currentUser) {
+    public Bookingpanel(User currentUser) {
         this.currentUser = currentUser;
         this.bookingService = new BookingService();
-        this.authService = new AuthenticationService();
+        this.authService = new AuthenticationService(new dao.UserDAO());
         initializeUI();
         loadBookingData();
     }
