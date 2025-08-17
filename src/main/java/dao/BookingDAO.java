@@ -9,6 +9,7 @@ import java.util.Date;
 public class BookingDAO {
 
     // Save new booking to database
+
     public int saveBooking(Booking booking) throws SQLException {
         String sql = "INSERT INTO bookings (guest_id, room_id, check_in_date, check_out_date, total_price, status) VALUES (?, ?, ?, ?, ?, ?)";
 

@@ -14,7 +14,7 @@ public class LoginPanel extends BackgroundPanel {
     private ActionListener loginSuccessListener;
 
     public LoginPanel() {
-        super("images/hotel_background.jpg");
+        super("src/images/loginbackgound.jpg");
         this.authService = new AuthenticationService(new dao.UserDAO());
         initializeUI();
     }

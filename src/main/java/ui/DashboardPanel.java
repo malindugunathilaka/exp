@@ -1,14 +1,20 @@
 package ui;
 
 import model.User;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class DashboardPanel extends JPanel {
+
     private User currentUser;
     private JTabbedPane tabbedPane;
     private ActionListener logoutListener;
+    private BufferedImage backgroundImage;  // Add background image field
 
     // UI Panels
     private RoomsPanel roomsPanel;
@@ -18,7 +24,35 @@ public class DashboardPanel extends JPanel {
 
     public DashboardPanel(User user) {
         this.currentUser = user;
+        loadBackgroundImage();  // Load background image
         initializeUI();
+    }
+
+    // Load the background image
+    private void loadBackgroundImage() {
+        try {
+            backgroundImage = ImageIO.read(new File("src/images/loginbackgound.jpg"));
+        } catch (IOException e) {
+            System.err.println("Could not load background image: " + e.getMessage());
+            backgroundImage = null;
+        }
+    }
+
+    // Override paintComponent to draw background image
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (backgroundImage != null) {
+            // Draw the background image scaled to fit the panel
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+
+            // Optional: Add a semi-transparent overlay for better text readability
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f));
+            g2d.setColor(Color.WHITE);
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+            g2d.dispose();
+        }
     }
 
     private void initializeUI() {
@@ -31,17 +65,23 @@ public class DashboardPanel extends JPanel {
         // Create tabbed pane
         tabbedPane = new JTabbedPane();
         tabbedPane.setFont(new Font("Arial", Font.BOLD, 12));
-        addTabs();
-        add(tabbedPane, BorderLayout.CENTER);
+        tabbedPane.setOpaque(false);  // Make transparent to show background
 
-        // Set background color
-        setBackground(Color.WHITE);
+        addTabs();
+
+        // Create a semi-transparent wrapper for better visibility
+        JPanel tabbedPaneWrapper = new JPanel(new BorderLayout());
+        tabbedPaneWrapper.setBackground(new Color(255, 255, 255, 200));
+        tabbedPaneWrapper.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        tabbedPaneWrapper.add(tabbedPane, BorderLayout.CENTER);
+
+        add(tabbedPaneWrapper, BorderLayout.CENTER);
     }
 
     private JPanel createHeaderPanel() {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-        headerPanel.setBackground(new Color(52, 73, 94)); // Dark blue-gray
+        headerPanel.setBackground(new Color(52, 73, 94, 220)); // Semi-transparent
 
         // Welcome label
         JLabel welcomeLabel = new JLabel("Welcome, " + currentUser.getFullname() + " (" + currentUser.getRole() + ")");
@@ -63,13 +103,13 @@ public class DashboardPanel extends JPanel {
         // Set role-specific colors
         switch (currentUser.getRole()) {
             case "admin":
-                roleLabel.setBackground(new Color(231, 76, 60)); // Red
+                roleLabel.setBackground(new Color(231, 76, 60));
                 break;
             case "staff":
-                roleLabel.setBackground(new Color(241, 196, 15)); // Yellow
+                roleLabel.setBackground(new Color(241, 196, 15));
                 break;
             case "guest":
-                roleLabel.setBackground(new Color(46, 204, 113)); // Green
+                roleLabel.setBackground(new Color(46, 204, 113));
                 break;
         }
 
@@ -79,7 +119,7 @@ public class DashboardPanel extends JPanel {
         // Logout button
         JButton logoutButton = new JButton("Logout");
         logoutButton.setFont(new Font("Arial", Font.BOLD, 12));
-        logoutButton.setBackground(new Color(231, 76, 60)); // Red
+        logoutButton.setBackground(new Color(231, 76, 60));
         logoutButton.setForeground(Color.WHITE);
         logoutButton.setFocusPainted(false);
         logoutButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
@@ -105,6 +145,7 @@ public class DashboardPanel extends JPanel {
         return headerPanel;
     }
 
+    // Rest of the methods remain the same...
     private void addTabs() {
         // Add common tabs
         roomsPanel = new RoomsPanel(currentUser);
@@ -150,19 +191,10 @@ public class DashboardPanel extends JPanel {
     }
 
     public void refreshData() {
-        // Refresh all panels
-        if (roomsPanel != null) {
-            roomsPanel.refreshData();
-        }
-        if (bookingsPanel != null) {
-            bookingsPanel.refreshData();
-        }
-        if (usersPanel != null) {
-            usersPanel.refreshData();
-        }
-        if (reportsPanel != null) {
-            reportsPanel.refreshData();
-        }
+        if (roomsPanel != null) roomsPanel.refreshData();
+        if (bookingsPanel != null) bookingsPanel.refreshData();
+        if (usersPanel != null) usersPanel.refreshData();
+        if (reportsPanel != null) reportsPanel.refreshData();
     }
 
     public void setLogoutListener(ActionListener listener) {
@@ -182,20 +214,8 @@ public class DashboardPanel extends JPanel {
         }
     }
 
-    // Method to get specific panels for external access
-    public RoomsPanel getRoomsPanel() {
-        return roomsPanel;
-    }
-
-    public Bookingpanel getBookingsPanel() {
-        return bookingsPanel;
-    }
-
-    public UsersPanel getUsersPanel() {
-        return usersPanel;
-    }
-
-    public ReportsPanel getReportsPanel() {
-        return reportsPanel;
-    }
+    public RoomsPanel getRoomsPanel() { return roomsPanel; }
+    public Bookingpanel getBookingsPanel() { return bookingsPanel; }
+    public UsersPanel getUsersPanel() { return usersPanel; }
+    public ReportsPanel getReportsPanel() { return reportsPanel; }
 }
