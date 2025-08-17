@@ -12,7 +12,7 @@ public final class UIConstants {
     /* ------------------------------------------------------------------
        1.  CUSTOM FONT – loads once at class-loading time
        ------------------------------------------------------------------ */
-    private static final String FONT_PATH = "/fonts/Alpenkreuzer.ttf"; // Path to the custom font file
+    private static final String FONT_PATH = "/fonts/sf-pro-rounded.ttf"; // Path to the custom font file
     private static final Font   BASE_FONT;
 
     static {
