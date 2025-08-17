@@ -14,7 +14,20 @@ public class HotelManagementSystem extends JFrame {
 
     public HotelManagementSystem() {
         super("Hotel Management System");
+        setGlobalFont();
         initializeApplication();
+    }
+
+    private void setGlobalFont() {
+        javax.swing.plaf.FontUIResource fontRes = new javax.swing.plaf.FontUIResource(utill.UIConstants.FONT_REGULAR);
+        java.util.Enumeration<Object> keys = javax.swing.UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = javax.swing.UIManager.get(key);
+            if (value instanceof javax.swing.plaf.FontUIResource) {
+                javax.swing.UIManager.put(key, fontRes);
+            }
+        }
     }
 
     private void initializeApplication() {
